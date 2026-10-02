@@ -4,93 +4,373 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign in · Repost</title>
-  <meta name="description" content="Sign in to your Repost account." />
+  <meta name="description" content="Sign in to your Repost account and start earning from every share." />
   <meta name="theme-color" content="#0a0912" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/main.css" />
+
+  <style>
+    /* ── Page scaffold ─────────────────────────────────────── */
+    .login-page {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow: hidden;
+      background: var(--color-ink);
+    }
+
+    /* ── Animated gradient orbs ────────────────────────────── */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .orb-1 {
+      width: 520px; height: 520px;
+      top: -140px; left: -120px;
+      background: radial-gradient(circle, rgba(139,92,246,0.35) 0%, transparent 70%);
+      animation-duration: 14s;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      bottom: -100px; right: -80px;
+      background: radial-gradient(circle, rgba(205,240,75,0.22) 0%, transparent 70%);
+      animation-duration: 11s;
+      animation-delay: -4s;
+    }
+    .orb-3 {
+      width: 300px; height: 300px;
+      top: 50%; right: 20%;
+      background: radial-gradient(circle, rgba(251,113,133,0.18) 0%, transparent 70%);
+      animation-duration: 9s;
+      animation-delay: -7s;
+    }
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.06); }
+    }
+
+    /* ── Grid dots overlay ──────────────────────────────────── */
+    .login-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+
+    /* ── Top logo bar ──────────────────────────────────────── */
+    .login-logo {
+      position: absolute;
+      top: 1.75rem; left: 2rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      text-decoration: none; z-index: 10;
+    }
+    .login-logo-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--color-brand) 0%, #4f1fcf 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(139,92,246,0.45);
+    }
+    .login-logo-icon svg { color: #fff; }
+    .login-logo-text {
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 1.2rem;
+      color: var(--color-mist); letter-spacing: -0.02em;
+    }
+    .login-logo-text span { color: var(--color-volt); }
+
+    /* ── Card ──────────────────────────────────────────────── */
+    .login-card {
+      position: relative; z-index: 5;
+      width: 100%; max-width: 440px;
+      background: rgba(21,18,36,0.78);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 2rem;
+      padding: 2.75rem 2.5rem 2.25rem;
+      box-shadow:
+        0 0 0 1px rgba(139,92,246,0.08),
+        0 32px 80px -16px rgba(0,0,0,0.7),
+        0 0 60px rgba(139,92,246,0.08);
+      animation: card-in 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(28px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 15%; right: 15%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(139,92,246,0.7), rgba(205,240,75,0.5), transparent);
+      border-radius: 999px;
+    }
+
+    /* ── Badge ─────────────────────────────────────────────── */
+    .login-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.3rem 0.85rem;
+      border-radius: 99px;
+      background: rgba(139,92,246,0.14);
+      border: 1px solid rgba(139,92,246,0.28);
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--color-brand);
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .login-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--color-brand);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.5; transform:scale(0.7); }
+    }
+
+    /* ── Headings ──────────────────────────────────────────── */
+    .login-h1 {
+      font-family: var(--font-display);
+      font-size: 2rem; font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.15;
+      color: var(--color-mist); margin-bottom: 0.4rem;
+    }
+    .login-h1 span {
+      background: linear-gradient(92deg, #c4b5fd 10%, #8b5cf6 60%, var(--color-volt) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .login-sub {
+      font-size: 0.875rem; color: var(--color-mute); margin-bottom: 2rem;
+    }
+    .login-sub a { color: var(--color-volt); font-weight: 600; transition: opacity 0.15s; }
+    .login-sub a:hover { opacity: 0.8; }
+
+    /* ── Form fields ───────────────────────────────────────── */
+    .lf-group { margin-bottom: 1.1rem; }
+    .lf-label {
+      display: block; font-size: 0.8125rem; font-weight: 600;
+      color: rgba(244,242,251,0.65); margin-bottom: 0.45rem; letter-spacing: 0.01em;
+    }
+    .lf-input-wrap { position: relative; }
+    .lf-input-icon {
+      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+      color: var(--color-mute); pointer-events: none; transition: color 0.2s;
+    }
+    .lf-input-wrap:focus-within .lf-input-icon { color: var(--color-brand); }
+    .lf-input {
+      width: 100%; height: 3rem;
+      padding: 0 3rem 0 2.85rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 0.875rem;
+      color: var(--color-mist);
+      font-family: var(--font-body); font-size: 0.9375rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .lf-input::placeholder { color: rgba(164,157,192,0.45); }
+    .lf-input:focus {
+      border-color: var(--color-brand);
+      background: rgba(139,92,246,0.06);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+    }
+    .lf-pw-toggle {
+      position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%);
+      color: var(--color-mute); padding: 0.25rem;
+      transition: color 0.2s; background: none; border: none; cursor: pointer;
+    }
+    .lf-pw-toggle:hover { color: var(--color-mist); }
+    .lf-error {
+      display: none; font-size: 0.75rem;
+      color: var(--color-blush); margin-top: 0.35rem; padding-left: 0.25rem;
+    }
+    .lf-error.visible { display: block; animation: shake 0.3s ease; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-4px); }
+      75%      { transform: translateX(4px); }
+    }
+
+    /* ── Forgot link ───────────────────────────────────────── */
+    .lf-forgot {
+      text-align: right; margin-top: -0.5rem; margin-bottom: 1.5rem;
+    }
+    .lf-forgot a { font-size: 0.78125rem; color: var(--color-mute); transition: color 0.15s; }
+    .lf-forgot a:hover { color: var(--color-volt); }
+
+    /* ── Submit button ─────────────────────────────────────── */
+    .lf-submit {
+      width: 100%; height: 3.125rem;
+      border-radius: 0.875rem; border: none; cursor: pointer;
+      font-family: var(--font-display); font-size: 0.9375rem;
+      font-weight: 700; letter-spacing: 0.01em;
+      background: linear-gradient(135deg, var(--color-brand) 0%, #4f1fcf 100%);
+      color: #fff;
+      box-shadow: 0 8px 28px -6px rgba(139,92,246,0.55);
+      position: relative; overflow: hidden;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .lf-submit::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .lf-submit:hover:not(:disabled)::before { opacity: 1; }
+    .lf-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 36px -8px rgba(139,92,246,0.65); }
+    .lf-submit:active:not(:disabled) { transform: translateY(0); }
+    .lf-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ── Divider ───────────────────────────────────────────── */
+    .lf-divider {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin: 1.5rem 0 1.25rem;
+      color: rgba(164,157,192,0.35); font-size: 0.75rem; letter-spacing: 0.08em;
+    }
+    .lf-divider::before, .lf-divider::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.07);
+    }
+
+    /* ── Social proof strip ────────────────────────────────── */
+    .lf-social-strip {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(205,240,75,0.07);
+      border: 1px solid rgba(205,240,75,0.14);
+      border-radius: 0.75rem; padding: 0.75rem 1rem;
+    }
+    .lf-avatars { display: flex; }
+    .lf-avatars span {
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 2px solid var(--color-ink);
+      font-size: 0.625rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-left: -7px; color: #fff;
+    }
+    .lf-avatars span:first-child { margin-left: 0; }
+    .lf-strip-text { font-size: 0.75rem; color: rgba(205,240,75,0.8); line-height: 1.4; }
+    .lf-strip-text strong { color: var(--color-volt); }
+
+    /* ── Footer ────────────────────────────────────────────── */
+    .login-footer {
+      position: relative; z-index: 5;
+      margin-top: 1.5rem; text-align: center;
+      font-size: 0.71875rem; color: rgba(164,157,192,0.45); max-width: 360px;
+    }
+    .login-footer a { color: rgba(164,157,192,0.6); transition: color 0.15s; }
+    .login-footer a:hover { color: var(--color-volt); }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .login-card { padding: 2rem 1.5rem 1.75rem; border-radius: 1.5rem; }
+      .login-h1 { font-size: 1.65rem; }
+      .login-logo { top: 1.25rem; left: 1.25rem; }
+    }
+  </style>
 </head>
 <body>
-  <div class="app-ambient noise" aria-hidden="true"></div>
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+  <div class="orb orb-3" aria-hidden="true"></div>
 
-  <div class="auth-grid">
-    <!-- Left: Form -->
-    <div class="auth-left">
-      <a href="index.html" class="logo-link">
-        <span class="logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
-        </span>
-        <span class="logo-text">repost<span class="text-volt">.</span></span>
-      </a>
+  <div class="login-page">
 
-      <div class="auth-form-wrap">
-        <h1 class="auth-h2">Welcome back</h1>
-        <p class="auth-sub">Don't have an account? <a href="signup.html">Sign up free</a></p>
+    <a href="index.html" class="login-logo" aria-label="Go to Repost homepage">
+      <span class="login-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75"
+             stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+          <path d="M17 1l4 4-4 4"/>
+          <path d="M3 11V9a4 4 0 014-4h14"/>
+          <path d="M7 23l-4-4 4-4"/>
+          <path d="M21 13v2a4 4 0 01-4 4H3"/>
+        </svg>
+      </span>
+      <span class="login-logo-text">repost<span>.</span></span>
+    </a>
 
-        <form class="form" id="loginForm" novalidate>
-          <div class="form-row">
-            <label class="form-label" for="email">Email address</label>
-            <input type="email" id="email" class="input-base" placeholder="you@university.edu" autocomplete="email" required />
-            <span class="form-error" id="emailErr">Please enter a valid email.</span>
+    <div class="login-card">
+      <div class="login-badge"><span class="dot"></span>Secure sign in</div>
+
+      <h1 class="login-h1">Welcome <span>back</span></h1>
+      <p class="login-sub">New here? <a href="signup.html">Create a free account →</a></p>
+
+      <form id="loginForm" novalidate>
+        <!-- Email -->
+        <div class="lf-group">
+          <label class="lf-label" for="email">Email address</label>
+          <div class="lf-input-wrap">
+            <svg class="lf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <input type="email" id="email" class="lf-input"
+                   placeholder="you@example.com" autocomplete="email" required />
           </div>
-          <div class="form-row">
-            <label class="form-label" for="password">Password</label>
-            <div class="password-wrap">
-              <input type="password" id="password" class="input-base" placeholder="••••••••" autocomplete="current-password" required />
-              <button type="button" class="password-toggle" id="pwToggle" aria-label="Show/hide password">
-                <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              </button>
-            </div>
-            <span class="form-error" id="pwErr">Please enter your password.</span>
-          </div>
-          <button type="submit" class="form-submit" id="loginBtn">Sign in</button>
-          <span class="form-error" id="formErr" style="text-align:center"></span>
-        </form>
-
-        <div style="margin-top:1.5rem;text-align:center">
-          <a href="signup.html" style="font-size:0.8125rem;color:var(--color-mute)">Forgot password? <span style="color:var(--color-volt)">Reset it</span></a>
+          <span class="lf-error" id="emailErr">Please enter a valid email address.</span>
         </div>
-      </div>
 
-      <p class="auth-footer">By continuing you agree to our Terms &amp; Privacy Policy. Every share is protected by escrow and verified with proof.</p>
+        <!-- Password -->
+        <div class="lf-group">
+          <label class="lf-label" for="password">Password</label>
+          <div class="lf-input-wrap">
+            <svg class="lf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+            <input type="password" id="password" class="lf-input"
+                   placeholder="••••••••" autocomplete="current-password" required />
+            <button type="button" class="lf-pw-toggle" id="pwToggle" aria-label="Show/hide password">
+              <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <span class="lf-error" id="pwErr">Please enter your password.</span>
+        </div>
+
+        <div class="lf-forgot"><a href="signup.html">Forgot password?</a></div>
+
+        <button type="submit" class="lf-submit" id="loginBtn">Sign in to Repost</button>
+        <span class="lf-error" id="formErr" style="display:block;text-align:center;margin-top:0.6rem"></span>
+      </form>
+
+      <div class="lf-divider">TRUSTED BY STUDENTS ACROSS AFRICA</div>
+
+      <div class="lf-social-strip">
+        <div class="lf-avatars">
+          <span style="background:linear-gradient(135deg,#8b5cf6,#4f1fcf)">TA</span>
+          <span style="background:linear-gradient(135deg,#fb7185,#be185d)">AO</span>
+          <span style="background:linear-gradient(135deg,#cdf04b,#65a30d);color:#12100a">KE</span>
+          <span style="background:linear-gradient(135deg,#38bdf8,#0369a1)">IM</span>
+        </div>
+        <p class="lf-strip-text"><strong>2,400+</strong> sharers earned this month · avg. <strong>₦58k</strong> earned</p>
+      </div>
     </div>
 
-    <!-- Right: Collage -->
-    <aside class="auth-right">
-      <div class="auth-collage">
-        <div class="collage-col">
-          <img src="https://picsum.photos/seed/neon/600/800" alt="" style="height:34vh" onerror="this.style.background='#1a0a2e'">
-          <img src="https://picsum.photos/seed/kicks/600/800" alt="" style="height:42vh" onerror="this.style.background='#0a1a2e'">
-          <img src="https://picsum.photos/seed/crave/600/800" alt="" style="height:34vh" onerror="this.style.background='#1a1a0a'">
-        </div>
-        <div class="collage-col offset">
-          <img src="https://picsum.photos/seed/midnight/600/800" alt="" style="height:38vh" onerror="this.style.background='#2e0a1a'">
-          <img src="https://picsum.photos/seed/thrift/600/800" alt="" style="height:30vh" onerror="this.style.background='#0a2e1a'">
-          <img src="https://picsum.photos/seed/finals/600/800" alt="" style="height:38vh" onerror="this.style.background='#1a0a2e'">
-        </div>
-      </div>
-      <div class="auth-right-overlay"></div>
-      <div class="auth-testimonial">
-        <div class="auth-testimonial-inner">
-          <p class="auth-quote">"I made &#8358;62,000 last month just reposting campus events to my WhatsApp Status. It took literally zero effort."</p>
-          <div class="auth-person">
-            <span class="auth-person-avatar">TA</span>
-            <div>
-              <p class="auth-person-name">Tunde A.</p>
-              <p class="auth-person-sub">University of Lagos · 212 shares completed</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </aside>
+    <p class="login-footer">
+      By continuing you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>.<br>
+      Every share is protected by escrow and verified with proof.
+    </p>
   </div>
 
   <script src="js/data.js"></script>
   <script>
-    // Password toggle
     const pwToggle = document.getElementById("pwToggle");
-    const pwInput = document.getElementById("password");
+    const pwInput  = document.getElementById("password");
     pwToggle.addEventListener("click", () => {
       const show = pwInput.type === "password";
       pwInput.type = show ? "text" : "password";
@@ -99,16 +379,13 @@
         : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
     });
 
-    // Form submit — demo: just redirect to feed
     document.getElementById("loginForm").addEventListener("submit", (e) => {
       e.preventDefault();
       const email = document.getElementById("email").value.trim();
-      const pw = document.getElementById("password").value;
-      let valid = true;
+      const pw    = document.getElementById("password").value;
+      let valid   = true;
 
-      document.getElementById("emailErr").classList.remove("visible");
-      document.getElementById("pwErr").classList.remove("visible");
-      document.getElementById("formErr").classList.remove("visible");
+      ["emailErr","pwErr","formErr"].forEach(id => document.getElementById(id).classList.remove("visible"));
 
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         document.getElementById("emailErr").classList.add("visible");
