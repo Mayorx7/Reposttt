@@ -1,0 +1,28 @@
+{
+  "name": "repost",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "**The paid-repost marketplace.** Brands and students pay real people to share their content to WhatsApp Status, Instagram Stories, TikTok, X, Facebook and LinkedIn — with screenshot proof before a cent leaves escrow.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mayorx7/Reposttt.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mayorx7/Reposttt/issues"
+  },
+  "homepage": "https://github.com/Mayorx7/Reposttt#readme",
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4"
+  }
+}

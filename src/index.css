@@ -1,6 +1,5 @@
 /* ============================================================
-   REPOST — STATIC SITE CSS
-   Design tokens + components matching the Next.js version
+   REPOST — Design tokens + component styles (Vite + React)
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
@@ -178,11 +177,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   -webkit-backdrop-filter: blur(20px);
 }
 .nav-inner {
-  max-width: 72rem; margin: 0 auto;
-  display: flex; align-items: center; gap: 2rem;
-  height: 4rem; padding: 0 1rem;
+  width: 100%;
+  display: flex; align-items: center;
+  height: 4rem; padding: 0 1.5rem;
 }
-@media (min-width: 640px) { .nav-inner { padding: 0 1.5rem; } }
+@media (min-width: 640px) { .nav-inner { padding: 0 2rem; } }
 .logo-link { display: flex; align-items: center; gap: 0.625rem; }
 .logo-icon {
   display: grid; place-items: center;
@@ -195,13 +194,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em;
 }
 .nav-links {
-  display: none; align-items: center; gap: 1.75rem;
+  display: none; align-items: center; justify-content: center; gap: 2rem;
+  flex: 1;
   font-size: 0.875rem; font-weight: 600; color: var(--color-mute);
 }
 @media (min-width: 768px) { .nav-links { display: flex; } }
 .nav-link { transition: color 0.2s; }
 .nav-link:hover { color: var(--color-mist); }
-.nav-actions { margin-left: auto; display: flex; align-items: center; gap: 0.75rem; }
+.nav-actions { margin-left: auto; display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
 .hide-sm { display: none; }
 @media (min-width: 640px) { .hide-sm { display: inline-flex; } }
 
@@ -214,9 +214,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   -webkit-backdrop-filter: blur(20px);
 }
 .app-header-inner {
-  max-width: 72rem; margin: 0 auto;
   display: flex; align-items: center; gap: 0.75rem;
   height: 4rem; padding: 0 1rem;
+  width: 100%;
 }
 @media (min-width: 640px) { .app-header-inner { padding: 0 1.5rem; } }
 .app-nav {
