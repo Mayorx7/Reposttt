@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import { Fragment } from 'react';
 import { MOCK_USER, MOCK_NOTIFICATIONS } from '../data';
 import { RepostIcon, Avatar } from './UI';
 
@@ -97,8 +98,8 @@ export default function AppShell({ children }) {
       <nav className="bottom-nav">
         <div className="bottom-nav-inner">
           {NAV_LINKS.map((n, i) => (
-            <>
-              <Link key={n.key} to={n.to} className={`bnav-link${isActive(n.key) ? ' active' : ''}`}>
+            <Fragment key={n.key}>
+              <Link to={n.to} className={`bnav-link${isActive(n.key) ? ' active' : ''}`}>
                 {n.icon}
                 {n.label}
               </Link>
@@ -109,7 +110,7 @@ export default function AppShell({ children }) {
                   </svg>
                 </Link>
               )}
-            </>
+            </Fragment>
           ))}
         </div>
       </nav>
